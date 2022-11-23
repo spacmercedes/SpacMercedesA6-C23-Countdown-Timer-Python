@@ -1,7 +1,6 @@
 import pygame, sys
 from win10toast import ToastNotifier
 
-
 class Timer:
     def __init__(self):
         pygame.init()
@@ -43,7 +42,6 @@ class Timer:
             # start_timer(0,0,3)
             pygame.display.flip()
             self.clock.tick(60)
-
 
     def notification(self):
         toast = ToastNotifier()
@@ -120,12 +118,6 @@ class Timer:
             self.minutes = 0
             self.seconds = 0
 
-
-    def reset_clock(self):
-        self.hours = 0
-        self.minutes = 0
-        self.seconds = 0
-
     def process_action(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -164,8 +156,6 @@ class Timer:
                     if self.seconds != 0 or self.minutes != 0 or self.hours != 0:
                         self.isTimerActive = not self.isTimerActive
                         self.draw_buttons()
-
-
 
 if __name__ == "__main__":
     timer = Timer()
