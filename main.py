@@ -28,7 +28,8 @@ class Timer:
 
         self.draw_buttons()
 
-
+        self.refresh_img=pygame.image.load('refresh.png')
+        self.screen.blit(self.refresh_img,(self.width-50,20))
 
     def logicLoop(self):
         while True:
@@ -39,7 +40,7 @@ class Timer:
             if self.isTimerActive:
                 self.start_timer()
 
-            # print(mouse)
+            # print(self.mouse)
             # start_timer(0,0,3)
             pygame.display.flip()
             self.clock.tick(60)
@@ -55,7 +56,7 @@ class Timer:
             threaded=True
         )
         audio_file = os.path.dirname(__file__) + '\_alarm.mp3'
-        # play(audio_file)
+        play(audio_file)
         print("Time is up")
 
     def draw_text(self, i, j, k):
@@ -63,12 +64,9 @@ class Timer:
         text = f"{i:02d} : {j:02d} : {k:02d}"
         label = self.font.render(text, True, (255, 255, 255))
         self.screen.blit(label, (self.width / 2 - 180, self.height / 2 - 35))
-        # pygame.time.delay(1000)
-        # time.sleep(1)
         pygame.display.update()
 
     def draw_buttons(self):
-        # pygame.draw.rect(screen, (76, 82, 103), pygame.Rect(W / 2 - 200, H / 2 - 50, 400, 100))
         text = "+"
         text2 = "-"
         text3 = "Play"
@@ -99,13 +97,11 @@ class Timer:
             for j in range(self.minutes, -1, -1):
                 for k in range(self.seconds, -1, -1):
                     self.process_action()
-
                     if(not self.isTimerActive):
                         stopTimer = True
                         self.seconds = k
                         self.minutes = j
                         self.hours = i
-                        #if buton reset true atunci resetez self seconds .... si dupa il fac back to false
                         break
                     self.draw_text(i, j, k)
                     pygame.time.delay(1000)
@@ -161,10 +157,15 @@ class Timer:
                     self.seconds -= 1
                     if self.seconds < 0:
                         self.seconds = 0
+                elif 750 <= self.mouse[0] <= 780 and 15 <= self.mouse[1] <= 50:
+                    self.hours = 0
+                    self.minutes = 0
+                    self.seconds = 0
                 elif 300 <= self.mouse[0] <= 500 and 300 <= self.mouse[1] <= 350:
                     if self.seconds != 0 or self.minutes != 0 or self.hours != 0:
                         self.isTimerActive = not self.isTimerActive
                         self.draw_buttons()
+
 
 
 if __name__ == "__main__":
