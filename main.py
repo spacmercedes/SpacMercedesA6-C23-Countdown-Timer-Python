@@ -1,6 +1,5 @@
-import pygame, sys, time, os
+import pygame, sys
 from win10toast import ToastNotifier
-from playsound import playsound as play
 
 
 class Timer:
@@ -55,8 +54,8 @@ class Timer:
             icon_path="clock.ico",
             threaded=True
         )
-        audio_file = os.path.dirname(__file__) + '\_alarm.mp3'
-        play(audio_file)
+        pygame.mixer.music.load('_alarm.wav')
+        pygame.mixer.music.play()
         print("Time is up")
 
     def draw_text(self, i, j, k):
