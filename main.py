@@ -23,6 +23,7 @@ class Timer:
         self.seconds = 0
 
         self.isTimerActive = False
+        self.isTimeUp = False
 
         self.draw_buttons()
 
@@ -68,16 +69,23 @@ class Timer:
         text2 = "-"
         text3 = "Play"
         text4 = "Pause"
+        text5 = "Time is up!"
         label = self.font.render(text, True, (92, 197, 158))
         label2 = self.font.render(text2, True, (92, 197, 158))
         label3 = self.font2.render(text3, True, (92, 197, 158))
         label4 = self.font2.render(text4, True, (92, 197, 158))
+        label5 = self.font2.render(text5, True, (255, 255, 255))
         self.screen.blit(label, (self.width / 2 - 160, self.height / 2 - 120))
         self.screen.blit(label, (self.width / 2 - 20, self.height / 2 - 120))
         self.screen.blit(label, (self.width / 2 + 120, self.height / 2 - 120))
         self.screen.blit(label2, (self.width / 2 - 150, self.height / 2 + 30))
         self.screen.blit(label2, (self.width / 2 - 10, self.height / 2 + 30))
         self.screen.blit(label2, (self.width / 2 + 130, self.height / 2 + 30))
+
+        if self.isTimeUp:
+            self.screen.blit(label5, (self.width / 2 - 90, self.height / 2 - 175))
+        else:
+            pygame.draw.rect(self.screen, (26, 43, 66),pygame.Rect(self.width / 2 - 100, self.height / 2 - 175, 200, 50))
 
         pygame.draw.rect(self.screen, (76, 82, 103), pygame.Rect(self.width / 2 - 100, self.height / 2 + 100, 200, 50), 0, 4)
 
@@ -112,11 +120,13 @@ class Timer:
 
 
         self.isTimerActive = False
+        self.isTimeUp = True
         self.draw_buttons()
         if (not stopTimer):
             self.notification()
             self.minutes = 0
             self.seconds = 0
+
 
     def process_action(self):
         for event in pygame.event.get():
@@ -126,36 +136,45 @@ class Timer:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 240 <= self.mouse[0] <= 275 and 100 <= self.mouse[1] <= 135:
                     self.hours += 1
+                    self.isTimeUp = False
                 elif 380 <= self.mouse[0] <= 415 and 100 <= self.mouse[1] <= 135:
                     self.minutes += 1
+                    self.isTimeUp = False
                     if self.minutes == 60:
                         self.hours += 1
                         self.minutes = 0
                 elif 520 <= self.mouse[0] <= 555 and 100 <= self.mouse[1] <= 135:
                     self.seconds += 1
+                    self.isTimeUp = False
                     if self.seconds == 60:
                         self.minutes += 1
                         self.seconds = 0
                 elif 240 <= self.mouse[0] <= 275 and 255 <= self.mouse[1] <= 280:
                     self.hours -= 1
+                    self.isTimeUp = False
                     if self.hours < 0:
                         self.hours = 0
                 elif 380 <= self.mouse[0] <= 415 and 255 <= self.mouse[1] <= 280:
                     self.minutes-= 1
+                    self.isTimeUp = False
                     if self.minutes < 0:
                         self.minutes = 0
                 elif 520 <= self.mouse[0] <= 555 and 255 <= self.mouse[1] <= 280:
                     self.seconds -= 1
+                    self.isTimeUp = False
                     if self.seconds < 0:
                         self.seconds = 0
                 elif 750 <= self.mouse[0] <= 780 and 15 <= self.mouse[1] <= 50:
                     self.hours = 0
                     self.minutes = 0
                     self.seconds = 0
+                    self.isTimeUp = False
                 elif 300 <= self.mouse[0] <= 500 and 300 <= self.mouse[1] <= 350:
                     if self.seconds != 0 or self.minutes != 0 or self.hours != 0:
                         self.isTimerActive = not self.isTimerActive
-                        self.draw_buttons()
+                        self.isTimeUp = False
+                self.draw_buttons()
+
 
 if __name__ == "__main__":
     timer = Timer()
