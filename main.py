@@ -39,8 +39,6 @@ class Timer:
             if self.isTimerActive:
                 self.start_timer()
 
-            # print(self.mouse)
-            # start_timer(0,0,3)
             pygame.display.flip()
             self.clock.tick(60)
 
@@ -118,14 +116,15 @@ class Timer:
                 break
             self.minutes = 59
 
-
         self.isTimerActive = False
-        self.isTimeUp = True
-        self.draw_buttons()
+
         if (not stopTimer):
+            self.isTimeUp = True
             self.notification()
             self.minutes = 0
             self.seconds = 0
+
+        self.draw_buttons()
 
 
     def process_action(self):
